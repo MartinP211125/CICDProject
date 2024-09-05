@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Professor</title>
+</head>
+<body>
+    <h1>Update Professor</h1>
+
+    <form method="POST">
+        <input type="text" name="name" value="{{ professor.name }}" placeholder="Professor Name">
+        <label for="courses">Select Courses:</label>
+        <select name="course_ids" multiple>
+            {% for course in courses %}
+                <option value="{{ course._id }}" {% if course._id in professor.course_ids %} selected {% endif %}>
+                    {{ course.name }}
+                </option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Update Professor">
+    </form>
+
+    <a href="/professors">Back to Professors</a>
+</body>
+</html>

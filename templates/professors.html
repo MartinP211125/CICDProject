@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Professors</title>
+</head>
+<body>
+    <h1>Professors</h1>
+
+    <!-- List of Professors -->
+    <ul>
+        {% for professor in professors %}
+            <li>{{ professor.name }}
+                - Courses: {{ professor.course_names|join(', ') }}
+                <a href="/professors/{{ professor._id }}">Edit</a>
+                <form action="/professors/{{ professor._id }}/delete" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Form to Add New Professor -->
+    <h2>Add a New Professor</h2>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Professor Name" required>
+        <label for="courses">Select Courses:</label>
+        <select name="course_ids" multiple>
+            {% for course in courses %}
+                <option value="{{ course._id }}">{{ course.name }}</option>
+            {% endfor %}
+        </select>
+        <input type="submit" value="Add Professor">
+    </form>
+
+    <a href="/courses">View Courses</a>
+</body>
+</html>

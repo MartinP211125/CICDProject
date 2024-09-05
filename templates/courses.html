@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Courses</title>
+</head>
+<body>
+    <h1>Courses</h1>
+
+    <!-- List of Courses -->
+    <ul>
+        {% for course in courses %}
+            <li>{{ course.name }}
+                <a href="/courses/{{ course._id }}">Edit</a>
+                <form action="/courses/{{ course._id }}/delete" method="POST" style="display:inline;">
+                    <button type="submit">Delete</button>
+                </form>
+            </li>
+        {% endfor %}
+    </ul>
+
+    <!-- Form to Add New Course -->
+    <h2>Add a New Course</h2>
+    <form method="POST">
+        <input type="text" name="name" placeholder="Course Name">
+        <input type="submit" value="Add Course">
+    </form>
+
+    <a href="/professors">View Professors</a>
+</body>
+</html>

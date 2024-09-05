@@ -1,0 +1,26 @@
+services:
+  courses:
+    image: martin211125/courses:latest
+    ports:
+      - "5000:5000"
+    environment:
+      FLASK_APP: app.py
+      FLASK_RUN_HOST: 0.0.0.0
+      FLASK_ENV: development
+      FLASK_DEBUG: 1
+      MONGO_URI: mongodb://mongo:27017/coursesDb
+    command: bash -c "flask run --host=0.0.0.0"
+
+
+  mongo:
+    image: mongo:latest
+    volumes:
+      - ./data/db:/data/db
+    healthcheck:
+      test: ["CMD-SHELL", "mongo --eval 'db.runCommand({ connectionStatus: 1 })' || exit 1"]
+      interval: 10s
+      retries: 10
+      timeout: 10s
+
+volumes:
+  db_data:
