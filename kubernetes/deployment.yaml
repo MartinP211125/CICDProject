@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cicd-app-deploy
+  namespace: cicd
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cicd-app
+  template:
+    metadata:
+      labels:
+        app: cicd-app
+    spec:
+      containers:
+        - name: cicd-app
+          image: martin211125/courses:latest
+          resources:
+            limits:
+              memory: "512Mi"
+              cpu: "500m"
+          ports:
+            - containerPort: 5000
+          envFrom:
+            - configMapRef:
+                name: cicd-app-config
+          livenessProbe:
+            httpGet:
+              path: /courses
+              port: 5000
+            initialDelaySeconds: 60
+            periodSeconds: 10
+          readinessProbe:
+            httpGet:
+              path: /courses
+              port: 5000
+            initialDelaySeconds: 60
+            periodSeconds: 10
