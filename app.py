@@ -1,5 +1,4 @@
-import os
-from flask import Flask, request, jsonify, render_template, redirect
+from flask import Flask, request, render_template, redirect
 from flask_pymongo import PyMongo
 from bson.objectid import ObjectId
 from config import Config
@@ -9,7 +8,7 @@ app.config.from_object(Config)
 mongo = PyMongo(app)
 db = mongo.db
 
-# Courses section
+
 @app.route('/courses', methods=['POST', 'GET'])
 @app.route('/kiii/courses', methods=['POST', 'GET'])
 def courses():
@@ -60,9 +59,11 @@ def professors():
 
     # Add course names to each professor
     for professor in professors:
-        professor['course_names'] = [course_mapping.get(str(course_id), "Unknown") for course_id in professor['course_ids']]
+        professor['course_names'] = [course_mapping.get(str(course_id), "Unknown") for course_id in
+                                     professor['course_ids']]
 
     return render_template('professors.html', professors=professors, courses=courses)
+
 
 @app.route('/professors/<string:professor_id>', methods=['GET', 'POST'])
 @app.route('/kiii/professors/<string:professor_id>', methods=['GET', 'POST'])
