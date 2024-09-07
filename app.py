@@ -27,7 +27,8 @@ def update_course(course_id):
     course = db.courses.find_one_or_404({'_id': ObjectId(course_id)})
 
     if request.method == 'POST':
-        db.courses.update_one({'_id': ObjectId(course_id)}, {'$set': {'name': request.form['name']}})
+        db.courses.update_one({'_id': ObjectId(course_id)},
+                              {'$set': {'name': request.form['name']}})
         return redirect('/courses')
 
     return render_template('update_course.html', course=course)
@@ -46,7 +47,8 @@ def delete_course(course_id):
 def professors():
     if request.method == 'POST':
         data = request.form
-        course_ids = [ObjectId(course_id) for course_id in request.form.getlist('course_ids')]
+        course_ids = [ObjectId(course_id) for course_id in
+                      request.form.getlist('course_ids')]
         new_professor = {'name': data['name'], 'course_ids': course_ids}
         db.professors.insert_one(new_professor)
         return redirect('/professors')
@@ -59,10 +61,12 @@ def professors():
 
     # Add course names to each professor
     for professor in professors:
-        professor['course_names'] = [course_mapping.get(str(course_id), "Unknown") for course_id in
-                                     professor['course_ids']]
+        professor['course_names'] = [
+            course_mapping.get(str(course_id), "Unknown") for course_id in
+            professor['course_ids']]
 
-    return render_template('professors.html', professors=professors, courses=courses)
+    return render_template('professors.html', professors=professors,
+                           courses=courses)
 
 
 @app.route('/professors/<string:professor_id>', methods=['GET', 'POST'])
@@ -73,14 +77,16 @@ def update_professor(professor_id):
 
     if request.method == 'POST':
         # Update multiple course IDs
-        course_ids = [ObjectId(course_id) for course_id in request.form.getlist('course_ids')]
+        course_ids = [ObjectId(course_id) for course_id in
+                      request.form.getlist('course_ids')]
         db.professors.update_one(
             {'_id': ObjectId(professor_id)},
             {'$set': {'name': request.form['name'], 'course_ids': course_ids}}
         )
         return redirect('/professors')
 
-    return render_template('update_professor.html', professor=professor, courses=courses)
+    return render_template('update_professor.html', professor=professor,
+                           courses=courses)
 
 
 @app.route('/professors/<string:professor_id>/delete', methods=['POST'])
